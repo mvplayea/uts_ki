@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Middleware\ClientAuth;
+use App\Http\Middleware\PatientAuth;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -14,7 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'client.auth' => ClientAuth::class,
+            'patient.auth' => PatientAuth::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

@@ -1,9 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\VisitController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\ProductApiController;
 
-Route::middleware('client.auth')->group(function (){
-    Route::get('/products', [ProductApiController::class, 'index']);
-    Route::post('/products', [ProductApiController::class, 'store']);
+Route::middleware('patient.auth')->group(function (){
+    Route::get('/visits', [VisitController::class,'index']);
 });

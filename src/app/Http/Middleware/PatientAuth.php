@@ -2,12 +2,12 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Client;
+use App\Models\Patient;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ClientAuth
+class PatientAuth
 {
     /**
      * Handle an incoming request.
@@ -17,13 +17,13 @@ class ClientAuth
     public function handle(Request $request, Closure $next): Response
     {
         $token = $request->bearerToken();
-        $client = Client::where('api_token', $token)->first();
-        if (!$client){
+        $patient = Patient::where('token', $token)->first();
+        if (!$patient){
             return response()->json([
                 'message' => 'Unathorized'
             ], 401);
         }
-        $request->merge(['authenticated_client' => $client]);
+        $request->merge(['authenticated_patient' => $patient]);
         return $next($request);
     }
 }

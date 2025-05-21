@@ -2,9 +2,9 @@
 
 namespace App\Filament\Admin\Resources;
 
-use App\Filament\Admin\Resources\ProductResource\Pages;
-use App\Filament\Admin\Resources\ProductResource\RelationManagers;
-use App\Models\Product;
+use App\Filament\Admin\Resources\MedicalRecordResource\Pages;
+use App\Filament\Admin\Resources\MedicalRecordResource\RelationManagers;
+use App\Models\MedicalRecord;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ProductResource extends Resource
+class MedicalRecordResource extends Resource
 {
-    protected static ?string $model = Product::class;
+    protected static ?string $model = MedicalRecord::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -23,18 +23,14 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('client_id')
-                    ->label('Client')
-                    ->relationship('client', 'name')
-                    ->searchable()
-                    ->required(),
-                Forms\Components\TextInput::make('name')
+                Forms\Components\TextInput::make('visit_id')
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('price')
+                    ->numeric(),
+                Forms\Components\Textarea::make('diagnosis')
                     ->required()
-                    ->numeric()
-                    ->prefix('$'),
+                    ->columnSpanFull(),
+                Forms\Components\Textarea::make('notes')
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -42,14 +38,8 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('client.name')
-                    ->label('Client')
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('price')
-                    ->money()
+                Tables\Columns\TextColumn::make('visit_id')
+                    ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -83,9 +73,9 @@ class ProductResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListProducts::route('/'),
-            'create' => Pages\CreateProduct::route('/create'),
-            'edit' => Pages\EditProduct::route('/{record}/edit'),
+            'index' => Pages\ListMedicalRecords::route('/'),
+            'create' => Pages\CreateMedicalRecord::route('/create'),
+            'edit' => Pages\EditMedicalRecord::route('/{record}/edit'),
         ];
     }
 }
